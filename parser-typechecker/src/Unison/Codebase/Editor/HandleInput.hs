@@ -2883,8 +2883,7 @@ addRunMain mainName Nothing = do
   where
     mainToFile (MainTerm.NotAFunctionName _) = NoTermWithThatName
     mainToFile (MainTerm.NotFound _) = NoTermWithThatName
-    -- TODO this needs to report as TermHasBadType, and attach the found type
-    mainToFile (MainTerm.BadType _) = NoTermWithThatName
+    mainToFile (MainTerm.BadType _ ty) = maybe NoTermWithThatName TermHasBadType ty
     mainToFile (MainTerm.Success hq tm typ) = RunMainSuccess $
       let v = Var.named (HQ.toText hq) in
       UF.typecheckedUnisonFile mempty mempty mempty [("main",[(v, tm, typ)])] -- mempty
